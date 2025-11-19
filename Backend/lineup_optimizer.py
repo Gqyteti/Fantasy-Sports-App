@@ -175,7 +175,7 @@ def get_player_data():
         client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
         client.admin.command('ping') # Checks if connection is valid
         
-        # If successful, fetch data from your 'players' collection
+        
         db = client[DB_NAME]
         collection = db['players'] 
         return list(collection.find({})) 
@@ -184,9 +184,8 @@ def get_player_data():
         print(f"MongoDB connection failed: {e}. Using fallback data.")
         return PLAYERS
 
-# --- Flask Setup: Initialize the web application ---
 app = Flask(__name__)
-# Enable CORS so your React frontend can talk to this server
+# Enable CORS so frontend can talk to backend
 CORS(app)
 
 @app.route('/api/players', methods=['GET'])
@@ -195,15 +194,15 @@ def get_players():
     API endpoint to retrieve and format player data.
     """
     try:
-        # 1. Call the function that handles MongoDB/Fallback
+        
         players_data = get_player_data()
         
-        # 2. Clean up data: Convert MongoDB's internal ID object to a string for JSON
+        
         for player in players_data:
             if '_id' in player:
                 player['_id'] = str(player['_id']) 
 
-        # 3. Return a clean JSON response (Success)
+        
         return jsonify({
             "status": "Success",
             "count": len(players_data),
@@ -211,14 +210,16 @@ def get_players():
         })
 
     except Exception as e:
-        # Good error handling is essential for a professional API
         print(f"Error fetching player data: {e}")
         return jsonify({
             "status": "Error",
             "message": f"Server error: {str(e)}"
         }), 500
 
-if __name__ == '__main__':
-    # Runs the application on your local computer, with automatic reloading
-    app.run(debug=True)
+import os
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
+
     
