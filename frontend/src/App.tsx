@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import PlayerTable from "./components/PlayerTable";
 import FilterBar from "./components/FilterBar";
 
