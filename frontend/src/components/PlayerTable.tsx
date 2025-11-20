@@ -17,7 +17,7 @@ const PlayerTable: React.FC<PlayerTableProps> = ({ positionFilter }) => {
 
   // Fetch players from backend when component mounts
   useEffect(() => {
-    fetch("https://backend-kcok.onrender.com/players")
+    fetch("https://backend-kcok.onrender.com/api/players")
       .then((res) => res.json())
       .then((data) => setPlayers(data.players))
       .catch((err) => console.error("Error fetching players:", err));
