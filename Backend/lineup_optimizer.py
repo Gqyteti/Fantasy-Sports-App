@@ -185,7 +185,7 @@ def get_player_data():
         return PLAYERS
 
 app = Flask(__name__)
-# Enable CORS so frontend can talk to backend
+
 CORS(app)
 
 @app.route('/api/players', methods=['GET'])
